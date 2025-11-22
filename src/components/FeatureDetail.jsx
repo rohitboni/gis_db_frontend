@@ -64,10 +64,10 @@ const FeatureDetail = () => {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <div className="text-center py-8">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
-          <p className="mt-4 text-gray-600">Loading feature...</p>
+      <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-luxury p-12 border border-white/50">
+        <div className="text-center py-12">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary-200 border-t-primary-600"></div>
+          <p className="mt-6 text-gray-700 font-semibold text-lg">Loading feature...</p>
         </div>
       </div>
     );
@@ -75,12 +75,17 @@ const FeatureDetail = () => {
 
   if (error || !feature) {
     return (
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-luxury p-8 border border-red-200/50">
         <div className="text-center py-8">
-          <p className="text-red-600">{error || 'Feature not found'}</p>
+          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <p className="text-red-600 font-semibold text-lg mb-4">{error || 'Feature not found'}</p>
           <button
             onClick={() => navigate('/')}
-            className="mt-4 px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 font-medium"
+            className="px-6 py-3 bg-gradient-primary text-white rounded-xl hover:shadow-lg font-semibold transition-all duration-200 shadow-md"
           >
             Go Back
           </button>
@@ -90,28 +95,41 @@ const FeatureDetail = () => {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">Feature Details</h2>
-          <div className="flex gap-2">
+    <div className="space-y-8 animate-fade-in">
+      <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-luxury p-8 border border-white/50 relative overflow-hidden">
+        {/* Decorative background */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-primary-500/10 to-purple-500/10 rounded-full blur-3xl -z-0"></div>
+        
+        <div className="flex items-center justify-between mb-8 relative z-10">
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 bg-gradient-primary rounded-2xl flex items-center justify-center shadow-lg">
+              <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900">Feature Details</h2>
+              <p className="text-sm text-gray-500 mt-1 font-medium">View and edit feature information</p>
+            </div>
+          </div>
+          <div className="flex gap-3">
             <button
               onClick={() => navigate('/')}
-              className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 font-medium transition-colors"
+              className="px-5 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 font-semibold transition-all duration-200 shadow-sm hover:shadow-md border border-gray-200"
             >
-              Back
+              ← Back
             </button>
             {!isEditing && (
               <>
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 font-medium transition-colors"
+                  className="px-6 py-3 bg-gradient-primary text-white rounded-xl hover:shadow-lg font-bold transition-all duration-200 shadow-md transform hover:-translate-y-0.5"
                 >
                   Edit
                 </button>
                 <button
                   onClick={handleDelete}
-                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 font-medium transition-colors"
+                  className="px-5 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-xl hover:from-red-700 hover:to-red-800 font-bold transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
                 >
                   Delete
                 </button>
@@ -124,43 +142,43 @@ const FeatureDetail = () => {
                     setIsEditing(false);
                     setEditData({ name: feature.name, properties: feature.properties || {} });
                   }}
-                  className="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 font-medium transition-colors"
+                  className="px-5 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 font-semibold transition-all duration-200 shadow-sm hover:shadow-md border border-gray-200"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleSave}
-                  className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 font-medium transition-colors"
+                  className="px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-xl hover:from-emerald-700 hover:to-emerald-800 font-bold transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
                 >
-                  Save
+                  Save Changes
                 </button>
               </>
             )}
           </div>
         </div>
 
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+        <div className="space-y-6 relative z-10">
+          <div className="bg-gradient-to-br from-blue-50/50 to-indigo-50/50 rounded-xl p-5 border border-blue-100/50">
+            <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-3">Name</label>
             {isEditing ? (
               <input
                 type="text"
                 value={editData.name}
                 onChange={(e) => setEditData({ ...editData, name: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="w-full px-5 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white font-semibold text-gray-900 shadow-sm hover:shadow-md transition-all duration-200"
               />
             ) : (
-              <p className="text-lg font-semibold text-gray-900">{feature.name}</p>
+              <p className="text-xl font-bold text-gray-900">{feature.name}</p>
             )}
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">ID</label>
-            <p className="text-sm text-gray-600 font-mono">{feature.id}</p>
+          <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-xl p-5 border border-gray-200/50">
+            <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-3">Feature ID</label>
+            <p className="text-sm text-gray-700 font-mono font-semibold bg-white px-4 py-2 rounded-lg border border-gray-200">{feature.id}</p>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Properties</label>
+          <div className="bg-gradient-to-br from-purple-50/50 to-pink-50/50 rounded-xl p-5 border border-purple-100/50">
+            <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-3">Properties</label>
             {isEditing ? (
               <textarea
                 value={JSON.stringify(editData.properties, null, 2)}
@@ -171,19 +189,19 @@ const FeatureDetail = () => {
                     // Invalid JSON, but allow typing
                   }
                 }}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 font-mono text-sm"
+                className="w-full px-5 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-mono text-sm bg-white shadow-sm hover:shadow-md transition-all duration-200"
                 rows={10}
               />
             ) : (
-              <pre className="bg-gray-50 p-4 rounded-md overflow-x-auto text-sm">
+              <pre className="bg-white p-5 rounded-xl overflow-x-auto text-sm font-mono border-2 border-gray-200 shadow-sm">
                 {JSON.stringify(feature.properties, null, 2)}
               </pre>
             )}
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Location Map</label>
-            <div className="border border-gray-300 rounded-md" style={{ width: '100%', height: '384px', overflow: 'hidden' }}>
+          <div className="bg-gradient-to-br from-emerald-50/50 to-teal-50/50 rounded-xl p-5 border border-emerald-100/50">
+            <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-3">Location Map</label>
+            <div className="border-2 border-gray-200 rounded-xl overflow-hidden shadow-lg" style={{ width: '100%', height: '400px', overflow: 'hidden' }}>
               <FeatureMap 
                 geometry={feature.geometry} 
                 featureName={feature.name}
@@ -191,21 +209,20 @@ const FeatureDetail = () => {
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Geometry Type</label>
-            <p className="text-sm text-gray-900">{feature.geometry?.type || 'N/A'}</p>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4 text-sm">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Created At</label>
-              <p className="text-gray-600">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-gradient-to-br from-amber-50/50 to-orange-50/50 rounded-xl p-5 border border-amber-100/50">
+              <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-3">Geometry Type</label>
+              <p className="text-sm text-gray-900 font-bold bg-white px-4 py-2 rounded-lg border border-gray-200">{feature.geometry?.type || 'N/A'}</p>
+            </div>
+            <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-xl p-5 border border-gray-200/50">
+              <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-3">Created At</label>
+              <p className="text-sm text-gray-700 font-semibold bg-white px-4 py-2 rounded-lg border border-gray-200">
                 {new Date(feature.created_at).toLocaleString()}
               </p>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Updated At</label>
-              <p className="text-gray-600">
+            <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-xl p-5 border border-gray-200/50">
+              <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-3">Updated At</label>
+              <p className="text-sm text-gray-700 font-semibold bg-white px-4 py-2 rounded-lg border border-gray-200">
                 {new Date(feature.updated_at).toLocaleString()}
               </p>
             </div>

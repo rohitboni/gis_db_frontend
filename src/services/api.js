@@ -80,6 +80,26 @@ export const filesApi = {
     const response = await api.get('/files/districts', { params });
     return response.data;
   },
+
+  // Download single file with format conversion
+  downloadFile: async (fileId, format = 'geojson') => {
+    const response = await api.get(`/files/${fileId}/download`, {
+      params: { format },
+      responseType: 'blob', // Important for file downloads
+      timeout: 600000, // 10 minutes for large files
+    });
+    return response.data;
+  },
+
+  // Batch download multiple files
+  downloadBatch: async (params = {}) => {
+    const response = await api.get('/files/download/batch', {
+      params,
+      responseType: 'blob', // Important for file downloads
+      timeout: 600000, // 10 minutes for large files
+    });
+    return response.data;
+  },
 };
 
 // Features API

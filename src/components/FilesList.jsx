@@ -6,6 +6,7 @@ const FilesList = ({ filters = {} }) => {
   const [files, setFiles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [downloading, setDownloading] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,6 +47,30 @@ const FilesList = ({ filters = {} }) => {
     }
   };
 
+  const handleDownload = async (file) => {
+    setDownloading({ ...downloading, [file.id]: true });
+
+    try {
+      const blob = await filesApi.downloadFile(file.id, 'geojson');
+      
+      // Create download link
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${file.filename}.geojson`;
+      
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error('Download error:', err);
+      alert('Failed to download file. Please try again.');
+    } finally {
+      setDownloading({ ...downloading, [file.id]: false });
+    }
+  };
+
   const formatFileSize = (bytes) => {
     if (!bytes) return 'N/A';
     if (bytes < 1024) return bytes + ' B';
@@ -55,10 +80,10 @@ const FilesList = ({ filters = {} }) => {
 
   if (loading && files.length === 0) {
     return (
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <div className="text-center py-8">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
-          <p className="mt-4 text-gray-600">Loading files...</p>
+      <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-luxury p-12 border border-white/50">
+        <div className="text-center py-12">
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary-200 border-t-primary-600"></div>
+          <p className="mt-6 text-gray-700 font-semibold text-lg">Loading files...</p>
         </div>
       </div>
     );
@@ -66,12 +91,17 @@ const FilesList = ({ filters = {} }) => {
 
   if (error) {
     return (
-      <div className="bg-white rounded-lg shadow-md p-6">
+      <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-luxury p-8 border border-red-200/50">
         <div className="text-center py-8">
-          <p className="text-red-600">{error}</p>
+          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <p className="text-red-600 font-semibold text-lg mb-4">{error}</p>
           <button
             onClick={loadFiles}
-            className="mt-4 px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 font-medium"
+            className="px-6 py-3 bg-gradient-primary text-white rounded-xl hover:shadow-lg font-semibold transition-all duration-200 shadow-md"
           >
             Retry
           </button>
@@ -82,68 +112,115 @@ const FilesList = ({ filters = {} }) => {
 
   if (files.length === 0) {
     return (
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <div className="text-center py-8">
-          <p className="text-gray-600">No files found. Upload a file to get started.</p>
+      <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-luxury p-12 border border-white/50">
+        <div className="text-center py-12">
+          <div className="w-20 h-20 bg-gradient-to-br from-primary-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <svg className="w-10 h-10 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <p className="text-gray-700 font-semibold text-lg mb-2">No files found</p>
+          <p className="text-gray-500 text-sm">Upload a file to get started</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
       {files.map((file) => (
         <div
           key={file.id}
-          className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-6 border border-gray-200"
+          className="group bg-white/90 backdrop-blur-sm rounded-2xl shadow-luxury hover:shadow-luxury-lg transition-all duration-300 p-6 border border-white/50 hover:border-primary-200/50 flex flex-col min-h-[340px] relative overflow-hidden"
         >
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex-1">
-              <h3 className="text-lg font-bold text-gray-800 mb-1">{file.filename}</h3>
-              <p className="text-sm text-gray-500">{file.original_filename}</p>
+          {/* Decorative gradient overlay */}
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary-500/5 to-purple-500/5 rounded-full blur-3xl -z-0"></div>
+          
+          {/* Header Section */}
+          <div className="flex items-start justify-between mb-5 pb-4 border-b border-gray-200/60 relative z-10">
+            <div className="flex-1 min-w-0 pr-3">
+              <h3 className="text-xl font-bold text-gray-900 mb-1.5 leading-tight break-words group-hover:text-primary-700 transition-colors">{file.filename}</h3>
+              <p className="text-xs text-gray-500 break-words font-medium">{file.original_filename}</p>
             </div>
-            <span className="px-2 py-1 bg-primary-100 text-primary-700 text-xs font-medium rounded">
+            <span className="px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs font-bold rounded-xl whitespace-nowrap shadow-lg border-2 border-indigo-400/30 flex-shrink-0 relative z-10 flex items-center justify-center min-w-[70px]">
               {file.file_type.toUpperCase()}
             </span>
           </div>
 
-          <div className="space-y-2 mb-4">
+          {/* Data Details Section */}
+          <div className="space-y-3.5 mb-6 flex-1 relative z-10">
             {file.state && (
-              <div className="flex items-center text-sm">
-                <span className="text-gray-600 w-20">State:</span>
-                <span className="font-medium text-gray-900">{file.state}</span>
+              <div className="flex items-center text-sm bg-gradient-to-r from-blue-50/50 to-indigo-50/50 rounded-lg px-3 py-2 border border-blue-100/50">
+                <svg className="w-4 h-4 text-primary-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span className="text-gray-600 w-16 flex-shrink-0 text-xs font-medium">State:</span>
+                <span className="font-bold text-gray-900 text-sm break-words">{file.state}</span>
               </div>
             )}
             {file.district && (
-              <div className="flex items-center text-sm">
-                <span className="text-gray-600 w-20">District:</span>
-                <span className="font-medium text-gray-900">{file.district}</span>
+              <div className="flex items-center text-sm bg-gradient-to-r from-purple-50/50 to-pink-50/50 rounded-lg px-3 py-2 border border-purple-100/50">
+                <svg className="w-4 h-4 text-purple-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                </svg>
+                <span className="text-gray-600 w-16 flex-shrink-0 text-xs font-medium">District:</span>
+                <span className="font-bold text-gray-900 text-sm break-words">{file.district}</span>
               </div>
             )}
-            <div className="flex items-center text-sm">
-              <span className="text-gray-600 w-20">Features:</span>
-              <span className="font-medium text-gray-900">{file.total_features.toLocaleString()}</span>
+            <div className="flex items-center text-sm bg-gradient-to-r from-emerald-50/50 to-teal-50/50 rounded-lg px-3 py-2 border border-emerald-100/50">
+              <svg className="w-4 h-4 text-emerald-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              <span className="text-gray-600 w-20 flex-shrink-0 text-xs font-medium">Features:</span>
+              <span className="font-bold text-gray-900 text-sm">{file.total_features.toLocaleString()}</span>
             </div>
-            <div className="flex items-center text-sm">
-              <span className="text-gray-600 w-20">Size:</span>
-              <span className="font-medium text-gray-900">{formatFileSize(file.file_size)}</span>
+            <div className="flex items-center text-sm bg-gradient-to-r from-amber-50/50 to-orange-50/50 rounded-lg px-3 py-2 border border-amber-100/50">
+              <svg className="w-4 h-4 text-amber-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+              </svg>
+              <span className="text-gray-600 w-20 flex-shrink-0 text-xs font-medium">Size:</span>
+              <span className="font-bold text-gray-900 text-sm">{formatFileSize(file.file_size)}</span>
             </div>
           </div>
 
-          <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-            <span className="text-xs text-gray-500">
+          {/* Action Section - Fixed at bottom */}
+          <div className="flex items-center justify-between pt-4 border-t border-gray-200/60 mt-auto relative z-10">
+            <span className="text-xs text-gray-500 font-medium">
               {new Date(file.created_at).toLocaleDateString()}
             </span>
-            <div className="flex gap-2">
+            <div className="flex gap-2 flex-wrap">
               <button
                 onClick={() => navigate(`/files/${file.id}`)}
-                className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 font-medium text-sm transition-colors"
+                className="px-4 py-2 bg-gradient-to-r from-primary-600 to-primary-700 text-white rounded-lg hover:from-primary-700 hover:to-primary-800 font-semibold text-sm transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
               >
-                View Features
+                View
+              </button>
+              <button
+                onClick={() => handleDownload(file)}
+                disabled={downloading[file.id]}
+                className="px-4 py-2 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-lg hover:from-emerald-700 hover:to-emerald-800 font-semibold text-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 disabled:transform-none"
+              >
+                {downloading[file.id] ? (
+                  <>
+                    <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Downloading...</span>
+                  </>
+                ) : (
+                  <>
+                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    <span>Download</span>
+                  </>
+                )}
               </button>
               <button
                 onClick={() => handleDelete(file.id, file.filename)}
-                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 font-medium text-sm transition-colors"
+                className="px-4 py-2 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg hover:from-red-700 hover:to-red-800 font-semibold text-sm transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
               >
                 Delete
               </button>

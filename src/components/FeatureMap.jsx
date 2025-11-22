@@ -339,8 +339,15 @@ const FeatureMap = ({ geometry, featureName }) => {
 
   if (!geometry) {
     return (
-      <div className="w-full h-96 bg-gray-100 rounded-md flex items-center justify-center">
-        <p className="text-gray-500">No geometry available for this feature</p>
+      <div className="w-full h-96 bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center border-2 border-gray-300 shadow-inner">
+        <div className="text-center">
+          <div className="w-16 h-16 bg-gray-300 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+            </svg>
+          </div>
+          <p className="text-gray-600 font-semibold">No geometry available for this feature</p>
+        </div>
       </div>
     );
   }
@@ -348,16 +355,17 @@ const FeatureMap = ({ geometry, featureName }) => {
   return (
     <div 
       ref={mapRef} 
-      className="w-full rounded-md"
+      className="w-full rounded-xl shadow-inner"
       style={{ 
-        height: '384px',
+        height: '400px',
         width: '100%',
-        minHeight: '384px',
+        minHeight: '400px',
         minWidth: '100%',
         position: 'relative',
         zIndex: 1,
         display: 'block',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        borderRadius: '0.75rem'
       }}
     />
   );
