@@ -213,7 +213,7 @@ const FeatureDetail = () => {
             <div className="bg-gradient-to-br from-amber-50/50 to-orange-50/50 rounded-xl p-5 border border-amber-100/50">
               <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-3">Geometry Type</label>
               <p className="text-sm text-gray-900 font-bold bg-white px-4 py-2 rounded-lg border border-gray-200">{feature.geometry?.type || 'N/A'}</p>
-            </div>
+          </div>
             <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-xl p-5 border border-gray-200/50">
               <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-3">Created At</label>
               <p className="text-sm text-gray-700 font-semibold bg-white px-4 py-2 rounded-lg border border-gray-200">

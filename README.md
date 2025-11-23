@@ -31,13 +31,18 @@ A React frontend application for managing GIS geographic data with an intuitive 
 npm install
 ```
 
-2. **Create environment file** (optional)
-Create a `.env` file in the frontend directory:
+2. **Environment configuration**
+The `.env` file is already configured for production:
+```env
+VITE_API_URL=https://gis-portal.1acre.in
+```
+
+For local development, create a `.env.local` file:
 ```env
 VITE_API_URL=http://localhost:8000
 ```
 
-If not set, it defaults to `http://localhost:8000`.
+If not set, it defaults to `https://gis-portal.1acre.in`.
 
 3. **Start development server**
 ```bash

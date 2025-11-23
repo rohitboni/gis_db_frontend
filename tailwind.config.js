@@ -47,7 +47,7 @@ export default {
         'luxury': '0 10px 40px -10px rgba(0, 0, 0, 0.15)',
         'luxury-lg': '0 20px 60px -15px rgba(0, 0, 0, 0.2)',
         'inner-luxury': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
-      },
+        },
       backgroundImage: {
         'gradient-luxury': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
         'gradient-primary': 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
