@@ -41,6 +41,38 @@ export const filesApi = {
     return response.data;
   },
 
+  // Upload multiple files with progress tracking
+  uploadMultipleFiles: async (files, state, district = null, onUploadProgress = null) => {
+    const formData = new FormData();
+    // Append all files
+    files.forEach((file) => {
+      formData.append('files', file);
+    });
+    if (state) {
+      formData.append('state', state);
+    }
+    if (district) {
+      formData.append('district', district);
+    }
+    const response = await api.post('/files/upload-multiple', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      timeout: 600000, // 10 minutes for large file uploads
+      maxBodyLength: Infinity, // Allow unlimited file size
+      maxContentLength: Infinity, // Allow unlimited response size
+      onUploadProgress: (progressEvent) => {
+        if (onUploadProgress && progressEvent.total) {
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          onUploadProgress(percentCompleted);
+        }
+      },
+    });
+    return response.data;
+  },
+
   // List files
   getFiles: async (params = {}) => {
     const response = await api.get('/files', { params });

@@ -44,22 +44,28 @@ const INDIAN_STATES_AND_UTS = [
 ];
 
 const FileUpload = ({ onUploadSuccess, onUploadError }) => {
-  const [file, setFile] = useState(null);
+  const [files, setFiles] = useState([]);
   const [selectedState, setSelectedState] = useState('');
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [uploadResults, setUploadResults] = useState([]);
 
-  const handleFileSelect = (selectedFile) => {
-    if (selectedFile && selectedState) {
-      // Only allow file selection if state is selected
-      setFile(selectedFile);
-      setUploadProgress(0);
-    } else if (selectedFile && !selectedState) {
-      // If file selected but no state, clear it
+  const handleFileSelect = (selectedFiles) => {
+    if (!selectedFiles || selectedFiles.length === 0) return;
+    
+    if (!selectedState) {
+      // If files selected but no state, don't add them
       return;
     }
+    
+    // Convert FileList to Array and add to existing files
+    const newFiles = Array.from(selectedFiles);
+    setFiles(prevFiles => [...prevFiles, ...newFiles]);
+  };
+
+  const handleRemoveFile = (index) => {
+    setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
   };
 
   const handleDragOver = (e) => {
@@ -78,9 +84,9 @@ const FileUpload = ({ onUploadSuccess, onUploadError }) => {
     if (!selectedState) {
       return; // Don't allow file drop if no state selected
     }
-    const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile) {
-      handleFileSelect(droppedFile);
+    const droppedFiles = e.dataTransfer.files;
+    if (droppedFiles && droppedFiles.length > 0) {
+      handleFileSelect(droppedFiles);
     }
   };
 
@@ -89,11 +95,16 @@ const FileUpload = ({ onUploadSuccess, onUploadError }) => {
       e.target.value = ''; // Clear file input if no state selected
       return;
     }
-    handleFileSelect(e.target.files[0]);
+    const selectedFiles = e.target.files;
+    if (selectedFiles && selectedFiles.length > 0) {
+      handleFileSelect(selectedFiles);
+      // Reset input to allow selecting same files again
+      e.target.value = '';
+    }
   };
 
   const handleUpload = async () => {
-    if (!file) return;
+    if (!files || files.length === 0) return;
     
     if (!selectedState) {
       if (onUploadError) {
@@ -104,48 +115,49 @@ const FileUpload = ({ onUploadSuccess, onUploadError }) => {
 
     setIsUploading(true);
     setUploadProgress(0);
-    setUploadSuccess(false);
+    setUploadResults([]);
 
     try {
-      const result = await filesApi.uploadFile(
-        file, 
+      const results = await filesApi.uploadMultipleFiles(
+        files, 
         selectedState, 
         null, 
         (progress) => {
-          // Update progress as file uploads
+          // Update progress as files upload
           setUploadProgress(progress);
         }
       );
-      // Upload complete - set all states immediately
+      
+      // Upload complete
       setIsUploading(false);
       setUploadProgress(100);
-      setUploadSuccess(true);
+      setUploadResults(results);
       
-      // Call success callback
+      // Call success callback for each successful upload
       if (onUploadSuccess) {
-        onUploadSuccess(result);
+        results.forEach((result) => {
+          onUploadSuccess(result);
+        });
       }
       
-      // Reset to normal state after showing success animation for 3 seconds
-      // Clear file but keep state selected for next upload
+      // Reset after showing success for 3 seconds
       setTimeout(() => {
-        setIsUploading(false); // Ensure it's false
-        setFile(null);
+        setIsUploading(false);
+        setFiles([]);
         setUploadProgress(0);
-        setUploadSuccess(false);
-        // Keep selectedState so user can upload another file for the same state
+        setUploadResults([]);
+        // Keep selectedState so user can upload more files for the same state
       }, 3000);
     } catch (error) {
       console.error('Upload error:', error);
       setIsUploading(false);
       setUploadProgress(0);
-      setUploadSuccess(false);
       if (onUploadError) {
         if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {
-          const fileSizeMB = (file.size / 1024 / 1024).toFixed(2);
-          onUploadError(`Upload timeout. The file (${fileSizeMB} MB) may be too large or your connection is slow. Please try again with a stable connection.`);
+          const totalSizeMB = (files.reduce((sum, f) => sum + f.size, 0) / 1024 / 1024).toFixed(2);
+          onUploadError(`Upload timeout. The files (${totalSizeMB} MB total) may be too large or your connection is slow. Please try again with a stable connection.`);
         } else if (error.message.includes('maxBodyLength') || error.message.includes('Request body larger')) {
-          onUploadError('File is too large. Maximum file size may be limited. Please contact support.');
+          onUploadError('Files are too large. Maximum file size may be limited. Please contact support.');
         } else {
           onUploadError(error.response?.data?.detail || error.message || 'Upload failed. Please try again.');
         }
@@ -180,8 +192,8 @@ const FileUpload = ({ onUploadSuccess, onUploadError }) => {
           </svg>
         </div>
         <div>
-          <h2 className="text-3xl font-bold text-gray-900">Upload Geographic File</h2>
-          <p className="text-sm text-gray-500 mt-1">Upload and manage your GIS data files</p>
+          <h2 className="text-3xl font-bold text-gray-900">Upload Geographic Files</h2>
+          <p className="text-sm text-gray-500 mt-1">Upload one or multiple GIS data files at once</p>
         </div>
       </div>
       
@@ -195,9 +207,9 @@ const FileUpload = ({ onUploadSuccess, onUploadError }) => {
           onChange={(e) => {
             const newState = e.target.value;
             setSelectedState(newState);
-            // Clear file if state is cleared
+            // Clear files if state is cleared
             if (!newState) {
-              setFile(null);
+              setFiles([]);
             }
           }}
           disabled={isUploading}
@@ -252,9 +264,9 @@ const FileUpload = ({ onUploadSuccess, onUploadError }) => {
           className={`border-2 border-dashed rounded-2xl p-10 text-center transition-all duration-300 relative z-10 ${
             isDragging
               ? 'border-primary-500 bg-gradient-to-br from-primary-50 to-primary-100 shadow-lg scale-[1.02]'
-              : uploadSuccess
+              : uploadResults.length > 0
               ? 'border-accent-400 bg-gradient-to-br from-accent-50 to-accent-100 shadow-lg'
-              : file
+              : files.length > 0
               ? 'border-accent-300 bg-gradient-to-br from-accent-50 to-accent-100 shadow-md'
               : 'border-gray-300 bg-gradient-to-br from-gray-50 to-slate-50 hover:border-primary-400 hover:bg-gradient-to-br hover:from-primary-50 hover:to-primary-100 hover:shadow-md'
           }`}
@@ -262,90 +274,16 @@ const FileUpload = ({ onUploadSuccess, onUploadError }) => {
           onDragLeave={selectedState ? handleDragLeave : undefined}
           onDrop={selectedState ? handleDrop : undefined}
         >
-        {file ? (
+        {files.length > 0 ? (
           <div className="space-y-4">
-            <div className="flex items-center justify-center">
-              {uploadSuccess ? (
-                <svg
-                  className="w-16 h-16 text-accent-600 animate-scale-in"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={3}
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  className="w-16 h-16 text-accent-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
-              )}
-            </div>
-            <div>
-              <p className="text-lg font-semibold text-gray-800">{file.name}</p>
-              <p className="text-sm text-gray-600 mt-1">
-                {getFileType(file.name)} • {(file.size / 1024 / 1024).toFixed(2)} MB
-                {file.size > 50 * 1024 * 1024 && (
-                  <span className="ml-2 text-accent-600 font-medium">
-                    (Large file - upload may take several minutes)
-                  </span>
-                )}
-              </p>
-              {selectedState && (
-                <p className="text-sm text-primary-600 mt-1 font-medium">
-                  State: {selectedState}
-                </p>
-              )}
-            </div>
-            {isUploading && uploadProgress > 0 && uploadProgress < 100 && (
-              <div className="w-full space-y-2">
-                <div className="w-full bg-gray-200 rounded-full h-3">
-                  <div
-                    className="bg-primary-700 h-3 rounded-full transition-all duration-300"
-                    style={{ width: `${uploadProgress}%` }}
-                  ></div>
-                </div>
-                <p className="text-sm text-gray-600 font-medium">
-                  Uploading: {uploadProgress}%
-                </p>
-                <p className="text-xs text-gray-500">
-                  Please wait, this may take a while for large files...
-                </p>
-              </div>
-            )}
-            {uploadSuccess && uploadProgress === 100 && (
+            {uploadResults.length > 0 ? (
               <div className="w-full space-y-3 animate-fade-in">
-                <div className="w-full bg-accent-100 rounded-full h-3 overflow-hidden">
-                  <div
-                    className="bg-accent-600 h-3 rounded-full transition-all duration-500"
-                    style={{ width: '100%', animation: 'slide-in 0.5s ease-out' }}
-                  ></div>
-                </div>
                 <div className="flex items-center justify-center space-x-2">
                   <svg
                     className="w-6 h-6 text-accent-600"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
-                    style={{
-                      strokeDasharray: 50,
-                      strokeDashoffset: 50,
-                      animation: 'checkmark 0.6s ease-out forwards'
-                    }}
                   >
                     <path
                       strokeLinecap="round"
@@ -355,41 +293,87 @@ const FileUpload = ({ onUploadSuccess, onUploadError }) => {
                     />
                   </svg>
                   <p className="text-accent-600 font-semibold text-lg">
-                    Upload complete!
+                    {uploadResults.length} file{uploadResults.length !== 1 ? 's' : ''} uploaded successfully!
                   </p>
                 </div>
-                <p className="text-sm text-gray-600">
-                  Your file has been successfully uploaded and processed.
-                </p>
+                <div className="text-left space-y-2 max-h-60 overflow-y-auto">
+                  {uploadResults.map((result, idx) => (
+                    <div key={idx} className="bg-white/80 rounded-lg p-3 border border-accent-200">
+                      <p className="text-sm font-semibold text-gray-900">{result.original_filename}</p>
+                      <p className="text-xs text-gray-600">{result.total_features} feature{result.total_features !== 1 ? 's' : ''}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
-            )}
-            {!uploadSuccess && (
-              <div className="flex gap-3 justify-center mt-6">
-                <button
-                  onClick={() => {
-                    setFile(null);
-                    setUploadProgress(0);
-                    setUploadSuccess(false);
-                    // Keep state selected, only clear file
-                  }}
-                  disabled={isUploading}
-                  className="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed font-semibold transition-all duration-200 shadow-sm hover:shadow-md border border-gray-200"
-                >
-                  Clear File
-                </button>
-                <button
-                  onClick={handleUpload}
-                  disabled={isUploading || !selectedState}
-                  className="px-8 py-3 bg-gradient-primary text-white rounded-xl hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed font-bold transition-all duration-200 shadow-md hover:shadow-xl transform hover:-translate-y-0.5 disabled:transform-none"
-                >
-                  {isUploading ? 'Uploading...' : 'Upload File'}
-                </button>
-              </div>
-            )}
-            {!selectedState && file && (
-              <p className="text-sm text-red-600 mt-2">
-                Please select a state before uploading.
-              </p>
+            ) : (
+              <>
+                <div className="text-left space-y-2 max-h-60 overflow-y-auto">
+                  {files.map((file, index) => (
+                    <div key={index} className="bg-white/80 rounded-lg p-4 border border-gray-200 flex items-center justify-between">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-semibold text-gray-900 truncate">{file.name}</p>
+                        <p className="text-xs text-gray-600">
+                          {getFileType(file.name)} • {(file.size / 1024 / 1024).toFixed(2)} MB
+                          {file.size > 50 * 1024 * 1024 && (
+                            <span className="ml-2 text-accent-600 font-medium">(Large file)</span>
+                          )}
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => handleRemoveFile(index)}
+                        disabled={isUploading}
+                        className="ml-3 p-2 text-red-600 hover:bg-red-50 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                {selectedState && (
+                  <p className="text-sm text-primary-600 font-medium">
+                    State: {selectedState} • {files.length} file{files.length !== 1 ? 's' : ''} selected
+                  </p>
+                )}
+                {isUploading && uploadProgress > 0 && uploadProgress < 100 && (
+                  <div className="w-full space-y-2">
+                    <div className="w-full bg-gray-200 rounded-full h-3">
+                      <div
+                        className="bg-primary-700 h-3 rounded-full transition-all duration-300"
+                        style={{ width: `${uploadProgress}%` }}
+                      ></div>
+                    </div>
+                    <p className="text-sm text-gray-600 font-medium">
+                      Uploading {files.length} file{files.length !== 1 ? 's' : ''}: {uploadProgress}%
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      Please wait, this may take a while for large files...
+                    </p>
+                  </div>
+                )}
+                {!isUploading && (
+                  <div className="flex gap-3 justify-center mt-6">
+                    <button
+                      onClick={() => {
+                        setFiles([]);
+                        setUploadProgress(0);
+                      }}
+                      disabled={isUploading}
+                      className="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed font-semibold transition-all duration-200 shadow-sm hover:shadow-md border border-gray-200"
+                    >
+                      Clear All
+                    </button>
+                    <button
+                      onClick={handleUpload}
+                      disabled={isUploading || !selectedState || files.length === 0}
+                      className="px-8 py-3 bg-gradient-primary text-white rounded-xl hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed font-bold transition-all duration-200 shadow-md hover:shadow-xl transform hover:-translate-y-0.5 disabled:transform-none"
+                    >
+                      {isUploading ? `Uploading ${files.length} file${files.length !== 1 ? 's' : ''}...` : `Upload ${files.length} File${files.length !== 1 ? 's' : ''}`}
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </div>
         ) : (
@@ -411,7 +395,7 @@ const FileUpload = ({ onUploadSuccess, onUploadError }) => {
             </div>
             <div>
               <p className="text-lg font-semibold text-gray-700">
-                Drag and drop your file here
+                Drag and drop your files here
               </p>
               <p className="text-sm text-gray-500 mt-2">or</p>
             </div>
@@ -422,6 +406,7 @@ const FileUpload = ({ onUploadSuccess, onUploadError }) => {
                 accept=".geojson,.json,.kml,.kmz,.shp,.zip,.gpx,.csv"
                 onChange={handleFileInputChange}
                 disabled={!selectedState}
+                multiple
               />
               <span className={`px-6 py-3 rounded-md font-medium inline-block transition-colors ${
                 selectedState 
@@ -433,6 +418,8 @@ const FileUpload = ({ onUploadSuccess, onUploadError }) => {
             </label>
             <p className="text-xs text-gray-500 mt-4">
               Supported formats: GeoJSON, JSON, KML, KMZ, Shapefile (ZIP), GPX, CSV
+              <br />
+              You can select multiple files at once
             </p>
           </div>
         )}
