@@ -62,7 +62,7 @@ const BatchDownload = ({ filters = {} }) => {
   return (
     <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
       <div className="flex items-center gap-2 mb-4">
-        <svg className="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="h-6 w-6 text-accent-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
         </svg>
         <h3 className="text-lg font-bold text-gray-800">Batch Download</h3>
@@ -87,7 +87,7 @@ const BatchDownload = ({ filters = {} }) => {
               checked={merge}
               onChange={(e) => setMerge(e.target.checked)}
               disabled={downloading}
-              className="mt-0.5 w-4 h-4 text-green-600 border-gray-300 rounded focus:ring-green-500 focus:ring-2"
+              className="mt-0.5 w-4 h-4 text-accent-600 border-gray-300 rounded focus:ring-accent-500 focus:ring-2"
             />
             <div className="flex-1">
               <span className="text-sm font-medium text-gray-800 block">
@@ -120,7 +120,7 @@ const BatchDownload = ({ filters = {} }) => {
             )}
             {filters.district && (
               <div className="flex items-center gap-2">
-                <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs font-medium">District</span>
+                <span className="px-2 py-1 bg-primary-100 text-primary-700 rounded text-xs font-medium">District</span>
                 <span className="text-gray-800 font-medium">{filters.district}</span>
               </div>
             )}
@@ -135,7 +135,7 @@ const BatchDownload = ({ filters = {} }) => {
         <button
           onClick={handleBatchDownload}
           disabled={downloading || !hasFilters}
-          className="w-full px-4 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:from-green-700 hover:to-green-800 font-semibold transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-md flex items-center justify-center gap-2"
+          className="w-full px-4 py-3 bg-gradient-accent text-white rounded-lg hover:opacity-90 font-semibold transition-all duration-200 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-md flex items-center justify-center gap-2"
         >
           {downloading ? (
             <>
@@ -155,8 +155,8 @@ const BatchDownload = ({ filters = {} }) => {
           )}
         </button>
 
-        <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-          <p className="text-xs text-green-800 text-center leading-relaxed">
+        <div className="bg-accent-50 border border-accent-200 rounded-lg p-3">
+          <p className="text-xs text-accent-800 text-center leading-relaxed">
             <span className="font-semibold">✓ No data loss:</span> All geometry and properties are preserved during conversion to GeoJSON format.
           </p>
         </div>

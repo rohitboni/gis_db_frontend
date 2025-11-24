@@ -11,11 +11,11 @@ const Navigation = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <nav className="bg-gradient-primary shadow-luxury-lg border-b border-white/20 relative overflow-hidden">
+    <nav className="bg-gradient-luxury shadow-luxury-lg border-b border-white/10 relative overflow-hidden">
       {/* Decorative background elements */}
-      <div className="absolute inset-0 bg-gradient-to-r from-primary-600/50 via-purple-600/30 to-indigo-600/50"></div>
-      <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-0 left-0 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-primary-700/30 via-primary-600/20 to-primary-800/30"></div>
+      <div className="absolute top-0 right-0 w-96 h-96 bg-accent-500/5 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent-500/5 rounded-full blur-3xl"></div>
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="flex justify-between h-20">
@@ -109,10 +109,10 @@ const UploadPage = () => {
         onUploadError={handleUploadError}
       />
       {uploadSuccess && (
-        <div className="bg-gradient-to-r from-emerald-50 to-green-50 border-l-4 border-emerald-500 text-emerald-800 px-6 py-4 rounded-xl shadow-lg animate-fade-in backdrop-blur-sm">
+        <div className="bg-gradient-to-r from-accent-50 to-accent-100/50 border-l-4 border-accent-500 text-accent-800 px-6 py-4 rounded-xl shadow-lg animate-fade-in backdrop-blur-sm">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
-              <svg className="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="w-10 h-10 bg-accent-200 rounded-full flex items-center justify-center flex-shrink-0">
+              <svg className="w-6 h-6 text-accent-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
@@ -121,7 +121,7 @@ const UploadPage = () => {
         </div>
       )}
       {uploadError && (
-        <div className="bg-gradient-to-r from-red-50 to-pink-50 border-l-4 border-red-500 text-red-800 px-6 py-4 rounded-xl shadow-lg animate-fade-in backdrop-blur-sm">
+        <div className="bg-gradient-to-r from-red-50 to-red-100/50 border-l-4 border-red-400 text-red-800 px-6 py-4 rounded-xl shadow-lg animate-fade-in backdrop-blur-sm">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
               <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -139,12 +139,12 @@ const UploadPage = () => {
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 relative">
+      <div className="min-h-screen bg-gradient-subtle relative">
         {/* Decorative background elements */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-primary-200/20 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-200/20 rounded-full blur-3xl"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-200/10 rounded-full blur-3xl"></div>
+          <div className="absolute top-0 right-0 w-96 h-96 bg-primary-200/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent-200/10 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary-300/5 rounded-full blur-3xl"></div>
         </div>
         
         <Navigation />

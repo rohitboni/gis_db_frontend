@@ -152,7 +152,7 @@ const FeaturesList = ({ filters = {}, fileId = null }) => {
     return (
       <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-luxury p-12 border border-white/50">
         <div className="text-center py-12">
-          <div className="w-20 h-20 bg-gradient-to-br from-primary-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <div className="w-20 h-20 bg-gradient-to-br from-primary-100 to-primary-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
             <svg className="w-10 h-10 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
@@ -198,7 +198,7 @@ const FeaturesList = ({ filters = {}, fileId = null }) => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200/60">
             {features.map((feature) => (
-              <tr key={feature.id} className="hover:bg-gradient-to-r hover:from-primary-50/30 hover:to-purple-50/30 transition-all duration-200">
+              <tr key={feature.id} className="hover:bg-gradient-to-r hover:from-primary-50/30 hover:to-primary-50/30 transition-all duration-200">
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm font-semibold text-gray-900">{feature.name}</div>
                   <div className="text-xs text-gray-500 font-medium">

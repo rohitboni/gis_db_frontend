@@ -171,7 +171,7 @@ const FileUpload = ({ onUploadSuccess, onUploadError }) => {
   return (
     <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-luxury p-8 border border-white/50 relative overflow-hidden">
       {/* Decorative background */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-primary-500/10 to-purple-500/10 rounded-full blur-3xl -z-0"></div>
+      <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-primary-300/10 to-primary-400/10 rounded-full blur-3xl -z-0"></div>
       
       <div className="flex items-center gap-4 mb-8 relative z-10">
         <div className="w-14 h-14 bg-gradient-primary rounded-2xl flex items-center justify-center shadow-lg">
@@ -251,12 +251,12 @@ const FileUpload = ({ onUploadSuccess, onUploadError }) => {
         <div
           className={`border-2 border-dashed rounded-2xl p-10 text-center transition-all duration-300 relative z-10 ${
             isDragging
-              ? 'border-primary-500 bg-gradient-to-br from-primary-50 to-purple-50 shadow-lg scale-[1.02]'
+              ? 'border-primary-500 bg-gradient-to-br from-primary-50 to-primary-100 shadow-lg scale-[1.02]'
               : uploadSuccess
-              ? 'border-emerald-400 bg-gradient-to-br from-emerald-50 to-green-50 shadow-lg'
+              ? 'border-accent-400 bg-gradient-to-br from-accent-50 to-accent-100 shadow-lg'
               : file
-              ? 'border-emerald-300 bg-gradient-to-br from-emerald-50 to-green-50 shadow-md'
-              : 'border-gray-300 bg-gradient-to-br from-gray-50 to-slate-50 hover:border-primary-400 hover:bg-gradient-to-br hover:from-primary-50 hover:to-indigo-50 hover:shadow-md'
+              ? 'border-accent-300 bg-gradient-to-br from-accent-50 to-accent-100 shadow-md'
+              : 'border-gray-300 bg-gradient-to-br from-gray-50 to-slate-50 hover:border-primary-400 hover:bg-gradient-to-br hover:from-primary-50 hover:to-primary-100 hover:shadow-md'
           }`}
           onDragOver={selectedState ? handleDragOver : undefined}
           onDragLeave={selectedState ? handleDragLeave : undefined}
@@ -267,7 +267,7 @@ const FileUpload = ({ onUploadSuccess, onUploadError }) => {
             <div className="flex items-center justify-center">
               {uploadSuccess ? (
                 <svg
-                  className="w-16 h-16 text-green-500 animate-scale-in"
+                  className="w-16 h-16 text-accent-600 animate-scale-in"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -281,7 +281,7 @@ const FileUpload = ({ onUploadSuccess, onUploadError }) => {
                 </svg>
               ) : (
                 <svg
-                  className="w-16 h-16 text-green-500"
+                  className="w-16 h-16 text-accent-600"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -300,7 +300,7 @@ const FileUpload = ({ onUploadSuccess, onUploadError }) => {
               <p className="text-sm text-gray-600 mt-1">
                 {getFileType(file.name)} • {(file.size / 1024 / 1024).toFixed(2)} MB
                 {file.size > 50 * 1024 * 1024 && (
-                  <span className="ml-2 text-orange-600 font-medium">
+                  <span className="ml-2 text-accent-600 font-medium">
                     (Large file - upload may take several minutes)
                   </span>
                 )}
@@ -315,7 +315,7 @@ const FileUpload = ({ onUploadSuccess, onUploadError }) => {
               <div className="w-full space-y-2">
                 <div className="w-full bg-gray-200 rounded-full h-3">
                   <div
-                    className="bg-primary-600 h-3 rounded-full transition-all duration-300"
+                    className="bg-primary-700 h-3 rounded-full transition-all duration-300"
                     style={{ width: `${uploadProgress}%` }}
                   ></div>
                 </div>
@@ -329,15 +329,15 @@ const FileUpload = ({ onUploadSuccess, onUploadError }) => {
             )}
             {uploadSuccess && uploadProgress === 100 && (
               <div className="w-full space-y-3 animate-fade-in">
-                <div className="w-full bg-green-100 rounded-full h-3 overflow-hidden">
+                <div className="w-full bg-accent-100 rounded-full h-3 overflow-hidden">
                   <div
-                    className="bg-green-600 h-3 rounded-full transition-all duration-500"
+                    className="bg-accent-600 h-3 rounded-full transition-all duration-500"
                     style={{ width: '100%', animation: 'slide-in 0.5s ease-out' }}
                   ></div>
                 </div>
                 <div className="flex items-center justify-center space-x-2">
                   <svg
-                    className="w-6 h-6 text-green-600"
+                    className="w-6 h-6 text-accent-600"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -354,7 +354,7 @@ const FileUpload = ({ onUploadSuccess, onUploadError }) => {
                       d="M5 13l4 4L19 7"
                     />
                   </svg>
-                  <p className="text-green-600 font-semibold text-lg">
+                  <p className="text-accent-600 font-semibold text-lg">
                     Upload complete!
                   </p>
                 </div>

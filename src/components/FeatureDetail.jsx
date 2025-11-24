@@ -98,7 +98,7 @@ const FeatureDetail = () => {
     <div className="space-y-8 animate-fade-in">
       <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-luxury p-8 border border-white/50 relative overflow-hidden">
         {/* Decorative background */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-primary-500/10 to-purple-500/10 rounded-full blur-3xl -z-0"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-primary-300/10 to-primary-400/10 rounded-full blur-3xl -z-0"></div>
         
         <div className="flex items-center justify-between mb-8 relative z-10">
           <div className="flex items-center gap-4">
@@ -148,7 +148,7 @@ const FeatureDetail = () => {
                 </button>
                 <button
                   onClick={handleSave}
-                  className="px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-xl hover:from-emerald-700 hover:to-emerald-800 font-bold transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                  className="px-6 py-3 bg-gradient-accent text-white rounded-xl hover:opacity-90 font-bold transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
                 >
                   Save Changes
                 </button>
@@ -158,7 +158,7 @@ const FeatureDetail = () => {
         </div>
 
         <div className="space-y-6 relative z-10">
-          <div className="bg-gradient-to-br from-blue-50/50 to-indigo-50/50 rounded-xl p-5 border border-blue-100/50">
+          <div className="bg-gradient-to-br from-blue-50/50 to-primary-50/50 rounded-xl p-5 border border-blue-100/50">
             <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-3">Name</label>
             {isEditing ? (
               <input
@@ -177,7 +177,7 @@ const FeatureDetail = () => {
             <p className="text-sm text-gray-700 font-mono font-semibold bg-white px-4 py-2 rounded-lg border border-gray-200">{feature.id}</p>
           </div>
 
-          <div className="bg-gradient-to-br from-purple-50/50 to-pink-50/50 rounded-xl p-5 border border-purple-100/50">
+          <div className="bg-gradient-to-br from-primary-50/50 to-pink-50/50 rounded-xl p-5 border border-primary-100/50">
             <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-3">Properties</label>
             {isEditing ? (
               <textarea
@@ -199,7 +199,7 @@ const FeatureDetail = () => {
             )}
           </div>
 
-          <div className="bg-gradient-to-br from-emerald-50/50 to-teal-50/50 rounded-xl p-5 border border-emerald-100/50">
+          <div className="bg-gradient-to-br from-accent-50/50 to-accent-50/50 rounded-xl p-5 border border-accent-100/50">
             <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-3">Location Map</label>
             <div className="border-2 border-gray-200 rounded-xl overflow-hidden shadow-lg" style={{ width: '100%', height: '400px', overflow: 'hidden' }}>
               <FeatureMap 
@@ -210,7 +210,7 @@ const FeatureDetail = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-gradient-to-br from-amber-50/50 to-orange-50/50 rounded-xl p-5 border border-amber-100/50">
+            <div className="bg-gradient-to-br from-accent-50/50 to-accent-50/50 rounded-xl p-5 border border-accent-100/50">
               <label className="block text-xs font-bold text-gray-600 uppercase tracking-wide mb-3">Geometry Type</label>
               <p className="text-sm text-gray-900 font-bold bg-white px-4 py-2 rounded-lg border border-gray-200">{feature.geometry?.type || 'N/A'}</p>
           </div>

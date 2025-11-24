@@ -82,7 +82,7 @@ const FilesList = ({ filters = {} }) => {
     return (
       <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-luxury p-12 border border-white/50">
         <div className="text-center py-12">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary-200 border-t-primary-600"></div>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary-200 border-t-primary-700"></div>
           <p className="mt-6 text-gray-700 font-semibold text-lg">Loading files...</p>
         </div>
       </div>
@@ -114,7 +114,7 @@ const FilesList = ({ filters = {} }) => {
     return (
       <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-luxury p-12 border border-white/50">
         <div className="text-center py-12">
-          <div className="w-20 h-20 bg-gradient-to-br from-primary-100 to-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <div className="w-20 h-20 bg-gradient-to-br from-primary-100 to-primary-200 rounded-2xl flex items-center justify-center mx-auto mb-6">
             <svg className="w-10 h-10 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
@@ -134,7 +134,7 @@ const FilesList = ({ filters = {} }) => {
           className="group bg-white/90 backdrop-blur-sm rounded-2xl shadow-luxury hover:shadow-luxury-lg transition-all duration-300 p-6 border border-white/50 hover:border-primary-200/50 flex flex-col min-h-[340px] relative overflow-hidden"
         >
           {/* Decorative gradient overlay */}
-          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary-500/5 to-purple-500/5 rounded-full blur-3xl -z-0"></div>
+          <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary-300/5 to-primary-400/5 rounded-full blur-3xl -z-0"></div>
           
           {/* Header Section */}
           <div className="flex items-start justify-between mb-5 pb-4 border-b border-gray-200/60 relative z-10">
@@ -142,7 +142,7 @@ const FilesList = ({ filters = {} }) => {
               <h3 className="text-xl font-bold text-gray-900 mb-1.5 leading-tight break-words group-hover:text-primary-700 transition-colors">{file.filename}</h3>
               <p className="text-xs text-gray-500 break-words font-medium">{file.original_filename}</p>
             </div>
-            <span className="px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-xs font-bold rounded-xl whitespace-nowrap shadow-lg border-2 border-indigo-400/30 flex-shrink-0 relative z-10 flex items-center justify-center min-w-[70px]">
+            <span className="px-4 py-2 bg-gradient-accent text-white text-xs font-bold rounded-xl whitespace-nowrap shadow-lg border-2 border-accent-400/30 flex-shrink-0 relative z-10 flex items-center justify-center min-w-[70px]">
               {file.file_type.toUpperCase()}
             </span>
           </div>
@@ -150,7 +150,7 @@ const FilesList = ({ filters = {} }) => {
           {/* Data Details Section */}
           <div className="space-y-3.5 mb-6 flex-1 relative z-10">
             {file.state && (
-              <div className="flex items-center text-sm bg-gradient-to-r from-blue-50/50 to-indigo-50/50 rounded-lg px-3 py-2 border border-blue-100/50">
+              <div className="flex items-center text-sm bg-gradient-to-r from-primary-50/50 to-primary-100/50 rounded-lg px-3 py-2 border border-primary-200/50">
                 <svg className="w-4 h-4 text-primary-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -160,23 +160,23 @@ const FilesList = ({ filters = {} }) => {
               </div>
             )}
             {file.district && (
-              <div className="flex items-center text-sm bg-gradient-to-r from-purple-50/50 to-pink-50/50 rounded-lg px-3 py-2 border border-purple-100/50">
-                <svg className="w-4 h-4 text-purple-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="flex items-center text-sm bg-gradient-to-r from-primary-50/50 to-primary-100/50 rounded-lg px-3 py-2 border border-primary-200/50">
+                <svg className="w-4 h-4 text-primary-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
                 <span className="text-gray-600 w-16 flex-shrink-0 text-xs font-medium">District:</span>
                 <span className="font-bold text-gray-900 text-sm break-words">{file.district}</span>
               </div>
             )}
-            <div className="flex items-center text-sm bg-gradient-to-r from-emerald-50/50 to-teal-50/50 rounded-lg px-3 py-2 border border-emerald-100/50">
-              <svg className="w-4 h-4 text-emerald-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="flex items-center text-sm bg-gradient-to-r from-accent-50/50 to-accent-100/50 rounded-lg px-3 py-2 border border-accent-200/50">
+              <svg className="w-4 h-4 text-accent-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
               <span className="text-gray-600 w-20 flex-shrink-0 text-xs font-medium">Features:</span>
               <span className="font-bold text-gray-900 text-sm">{file.total_features.toLocaleString()}</span>
             </div>
-            <div className="flex items-center text-sm bg-gradient-to-r from-amber-50/50 to-orange-50/50 rounded-lg px-3 py-2 border border-amber-100/50">
-              <svg className="w-4 h-4 text-amber-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="flex items-center text-sm bg-gradient-to-r from-accent-50/50 to-accent-100/50 rounded-lg px-3 py-2 border border-accent-200/50">
+              <svg className="w-4 h-4 text-accent-600 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
               </svg>
               <span className="text-gray-600 w-20 flex-shrink-0 text-xs font-medium">Size:</span>
@@ -192,14 +192,14 @@ const FilesList = ({ filters = {} }) => {
             <div className="flex gap-2 flex-wrap">
               <button
                 onClick={() => navigate(`/files/${file.id}`)}
-                className="px-4 py-2 bg-gradient-to-r from-primary-600 to-primary-700 text-white rounded-lg hover:from-primary-700 hover:to-primary-800 font-semibold text-sm transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                className="px-4 py-2 bg-gradient-primary text-white rounded-lg hover:opacity-90 font-semibold text-sm transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
               >
                 View
               </button>
               <button
                 onClick={() => handleDownload(file)}
                 disabled={downloading[file.id]}
-                className="px-4 py-2 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-lg hover:from-emerald-700 hover:to-emerald-800 font-semibold text-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 disabled:transform-none"
+                className="px-4 py-2 bg-gradient-accent text-white rounded-lg hover:opacity-90 font-semibold text-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 disabled:transform-none"
               >
                 {downloading[file.id] ? (
                   <>

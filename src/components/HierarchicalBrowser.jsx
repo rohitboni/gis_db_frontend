@@ -151,12 +151,12 @@ const HierarchicalBrowser = ({ onFilterChange }) => {
   return (
     <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-luxury p-6 border border-white/50 relative overflow-hidden">
       {/* Decorative background elements */}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-primary-500/10 to-purple-500/10 rounded-full blur-3xl -z-0"></div>
-      <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-indigo-500/10 to-blue-500/10 rounded-full blur-3xl -z-0"></div>
+      <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-primary-500/10 to-primary-500/10 rounded-full blur-3xl -z-0"></div>
+      <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-primary-300/10 to-primary-400/10 rounded-full blur-3xl -z-0"></div>
       
       <div className="flex items-center justify-between mb-6 relative z-10">
         <div className="flex items-center gap-4">
-          <div className="w-14 h-14 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center shadow-xl border-2 border-emerald-400/30">
+          <div className="w-14 h-14 bg-gradient-to-br from-accent-500 to-accent-600 rounded-2xl flex items-center justify-center shadow-xl border-2 border-accent-400/30">
             <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />

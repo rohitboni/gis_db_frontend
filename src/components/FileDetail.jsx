@@ -110,7 +110,7 @@ const FileDetail = () => {
       {/* File Summary Card */}
       <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-luxury p-8 border border-white/50 relative overflow-hidden">
         {/* Decorative background */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-primary-500/10 to-purple-500/10 rounded-full blur-3xl -z-0"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-br from-primary-500/10 to-primary-500/10 rounded-full blur-3xl -z-0"></div>
         
         <div className="flex items-center justify-between mb-8 relative z-10">
           <div>
@@ -127,7 +127,7 @@ const FileDetail = () => {
             <button
               onClick={handleDownload}
               disabled={downloading}
-              className="px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-xl hover:from-emerald-700 hover:to-emerald-800 font-bold transition-all duration-200 shadow-md hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transform hover:-translate-y-0.5 disabled:transform-none"
+              className="px-6 py-3 bg-gradient-accent text-white rounded-xl hover:opacity-90 font-bold transition-all duration-200 shadow-md hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transform hover:-translate-y-0.5 disabled:transform-none"
             >
               {downloading ? (
                 <>
@@ -160,17 +160,17 @@ const FileDetail = () => {
             <label className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-3">Original Filename</label>
             <p className="text-gray-900 font-bold text-sm break-words">{file.original_filename}</p>
           </div>
-          <div className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-xl p-5 border border-indigo-200/50 shadow-sm hover:shadow-md transition-all duration-200">
-            <label className="block text-xs font-bold text-indigo-600 uppercase tracking-wide mb-3">File Type</label>
-            <p className="text-indigo-900 font-bold text-sm">{file.file_type.toUpperCase()}</p>
+          <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl p-5 border border-primary-200/50 shadow-sm hover:shadow-md transition-all duration-200">
+            <label className="block text-xs font-bold text-primary-600 uppercase tracking-wide mb-3">File Type</label>
+            <p className="text-primary-900 font-bold text-sm">{file.file_type.toUpperCase()}</p>
           </div>
-          <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-xl p-5 border border-amber-200/50 shadow-sm hover:shadow-md transition-all duration-200">
-            <label className="block text-xs font-bold text-amber-600 uppercase tracking-wide mb-3">File Size</label>
-            <p className="text-amber-900 font-bold text-sm">{formatFileSize(file.file_size)}</p>
+          <div className="bg-gradient-to-br from-accent-50 to-accent-50 rounded-xl p-5 border border-accent-200/50 shadow-sm hover:shadow-md transition-all duration-200">
+            <label className="block text-xs font-bold text-accent-600 uppercase tracking-wide mb-3">File Size</label>
+            <p className="text-accent-900 font-bold text-sm">{formatFileSize(file.file_size)}</p>
           </div>
-          <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl p-5 border border-emerald-200/50 shadow-sm hover:shadow-md transition-all duration-200">
-            <label className="block text-xs font-bold text-emerald-600 uppercase tracking-wide mb-3">Total Features</label>
-            <p className="text-emerald-900 font-bold text-sm">{file.total_features.toLocaleString()}</p>
+          <div className="bg-gradient-to-br from-accent-50 to-accent-50 rounded-xl p-5 border border-accent-200/50 shadow-sm hover:shadow-md transition-all duration-200">
+            <label className="block text-xs font-bold text-accent-600 uppercase tracking-wide mb-3">Total Features</label>
+            <p className="text-accent-900 font-bold text-sm">{file.total_features.toLocaleString()}</p>
           </div>
           {file.state && (
             <div className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-xl p-5 border border-blue-200/50 shadow-sm hover:shadow-md transition-all duration-200">
@@ -179,9 +179,9 @@ const FileDetail = () => {
             </div>
           )}
           {file.district && (
-            <div className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-5 border border-purple-200/50 shadow-sm hover:shadow-md transition-all duration-200">
-              <label className="block text-xs font-bold text-purple-600 uppercase tracking-wide mb-3">District</label>
-              <p className="text-purple-900 font-bold text-sm">{file.district}</p>
+            <div className="bg-gradient-to-br from-primary-50 to-pink-50 rounded-xl p-5 border border-primary-200/50 shadow-sm hover:shadow-md transition-all duration-200">
+              <label className="block text-xs font-bold text-primary-600 uppercase tracking-wide mb-3">District</label>
+              <p className="text-primary-900 font-bold text-sm">{file.district}</p>
             </div>
           )}
           <div className="bg-gradient-to-br from-gray-50 to-slate-50 rounded-xl p-5 border border-gray-200/50 shadow-sm hover:shadow-md transition-all duration-200">
